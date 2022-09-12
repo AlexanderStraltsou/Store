@@ -9,6 +9,8 @@
 //ELSE
 //Tell the user that the product is not available
 
+bool isShopping = true;
+
 List <string> availableProducts = new();
 
 availableProducts.Add("Peanut Butter");
@@ -27,11 +29,42 @@ availableProducts.Add("Cheese");
 
 List<string> shoppingCart = new();
 
+while (isShopping)
+{
+    Console.Clear();
+    WelcomeUserToStore();
+    PrintAvailableProducts();
+    PrintShoppingCart();
+    string response = AskForInput();
+    if (response != "Done")
+    {
+        bool isAvailable = CheckAvailability(response);
+        if (isAvailable)
+        {
+            BuyProduct(response);
+        }
+        else
+        {
+            Console.WriteLine("Product doesnt exist! ");
+            Console.WriteLine("Press Enter To Continue");
+            Console.ReadLine();
+        }
+    }
 
-WelcomeUserToStore();
-PrintAvailableProducts();
-PrintShoppingCart();
-AskForInput();
+    else
+    {
+        isShopping = false;
+    }
+
+}
+
+Console.WriteLine("Thanks for shopping");
+Console.WriteLine("See you again soon"); 
+Console.ReadLine();
+
+
+
+
 
 void WelcomeUserToStore ()
 {
@@ -70,11 +103,35 @@ string AskForInput ()
 {
     Console.WriteLine();
     Console.WriteLine("What do you want to buy?");
+    Console.WriteLine("Or type \"Done\" to leave the store");
     Console.WriteLine();
-
     Console.Write("Reply: ");
     string input = Console.ReadLine();
 
     return input;
 }
+
+bool CheckAvailability(string productToCheck)
+{
+    bool isAvailable = false;
+    foreach (string availableProduct in availableProducts)
+    {
+        if (availableProduct == productToCheck)
+        {
+            isAvailable = true;
+        }
+
+    }
+    return isAvailable;
+}
+
+void BuyProduct(string productToBuy)
+{
+    //add product to shopping cart
+
+    shoppingCart.Add(productToBuy);
+    //Remove product from avaiable products
+    availableProducts.Remove(productToBuy);
+}
+
 
